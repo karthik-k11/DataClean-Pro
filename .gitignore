@@ -1,0 +1,12 @@
+venv/
+__pycache__/
+*.pyc
+
+uploads/
+cleaned/
+
+database/history.db
+
+.env
+
+.vscode/
