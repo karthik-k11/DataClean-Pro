@@ -43,12 +43,92 @@
                 <p><strong>Total Rows:</strong> {{ total_rows }}</p>
                 <p><strong>Total Columns:</strong> {{ total_columns }}</p>
             </div>
+            <form method="POST">
+
+                <input type="hidden" name="cleaned_file" value="{{ cleaned_file }}">
+
+                <button type="submit" name="remove_duplicates">
+                    Remove Duplicate Rows
+                </button>
+
+                <button type="submit" name="remove_empty_rows">
+                    Remove Empty Rows
+                </button>
+
+                <button type="submit" name="remove_empty_columns">
+                    Remove Empty Columns
+                </button>
+
+                <button type="submit" name="fill_missing">
+                    Fill Missing Values
+                </button>
+
+                <button type="submit" name="standardize_columns">
+                    Standardize Column Names
+                </button>
+
+                <button type="submit" name="convert_types">
+                    Convert Data Types
+                </button>
+
+            </form>
 
             <div class="preview">
                 <h2>First 10 Rows</h2>
 
                 {{ preview_data | safe }}
             </div>
+            <div class="summary">
+                <h2>Data Quality Report</h2>
+
+                <h3>Missing Values</h3>
+                <ul>
+                    {% for column, count in quality_report.missing_values.items() %}
+                        <li><strong>{{ column }}</strong>: {{ count }}</li>
+                    {% endfor %}
+                </ul>
+
+                <h3>Duplicate Rows</h3>
+                <p>{{ quality_report.duplicate_rows }}</p>
+
+                <h3>Empty Columns</h3>
+
+                {% if quality_report.empty_columns %}
+                    <ul>
+                        {% for column in quality_report.empty_columns %}
+                            <li>{{ column }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No empty columns found.</p>
+                {% endif %}
+
+                <h3>Data Types</h3>
+                <ul>
+                    {% for column, datatype in quality_report.data_types.items() %}
+                        <li><strong>{{ column }}</strong>: {{ datatype }}</li>
+                    {% endfor %}
+                </ul>
+
+                <h3>Null Percentage</h3>
+                <ul>
+                    {% for column, percentage in quality_report.null_percentage.items() %}
+                        <li><strong>{{ column }}</strong>: {{ percentage }}%</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% if summary %}
+
+            <div class="summary">
+                <h2>Before vs After Summary</h2>
+
+                <p><strong>Operation:</strong> {{ summary.operation }}</p>
+               <p><strong>Rows Before:</strong> {{ summary.rows_before }}</p>
+                <p><strong>Rows After:</strong> {{ summary.rows_after }}</p>
+                <p><strong>Changes:</strong> {{ summary.count }}</p>
+            </div>
+
+{% endif %}
 
         {% endif %}
 
