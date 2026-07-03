@@ -73,6 +73,26 @@
 
             </form>
 
+            <br>
+
+            <a href="/history">
+                <button type="button">
+                    View Cleaning History
+                </button>
+            </a>
+
+            {% if cleaned_file %}
+
+            <br><br>
+
+            <a href="/download/{{ cleaned_file }}">
+                <button type="button">
+                    Download Cleaned Dataset
+                </button>
+            </a>
+
+            {% endif %}
+
             <div class="preview">
                 <h2>First 10 Rows</h2>
 
