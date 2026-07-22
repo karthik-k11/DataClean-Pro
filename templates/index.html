@@ -9,150 +9,277 @@
 </head>
 <body>
 
-    <div class="container">
+<div class="page-wrapper">
 
-        <h1>DataClean Pro</h1>
-        <p>Upload a CSV or Excel file to preview your dataset.</p>
+<div class="dashboard">
+
+    <header class="topbar">
+
+        <div class="brand-section">
+
+            <div class="app-tag">
+                DATA ENGINEERING WORKSPACE
+            </div>
+
+            <h1>
+                DataClean Pro
+            </h1>
+
+            <p>
+                Clean, validate and prepare datasets before analysis.
+            </p>
+
+        </div>
+
+        <div class="header-actions">
+
+            <a href="/history">
+                <button type="button" class="secondary-btn">
+                    View History
+                </button>
+            </a>
+
+        </div>
+
+    </header>
+
+    {% if preview_data %}
+
+    <section class="stats-grid">
+
+        <div class="stat-card">
+            <span class="stat-label">Rows</span>
+            <h2>{{ total_rows }}</h2>
+        </div>
+
+        <div class="stat-card">
+            <span class="stat-label">Columns</span>
+            <h2>{{ total_columns }}</h2>
+        </div>
+
+        <div class="stat-card">
+            <span class="stat-label">Duplicates</span>
+            <h2>{{ quality_report.duplicate_rows }}</h2>
+        </div>
+
+        <div class="stat-card">
+            <span class="stat-label">Empty Columns</span>
+            <h2>{{ quality_report.empty_columns|length }}</h2>
+        </div>
+
+    </section>
+
+    {% endif %}
+
+    <section class="glass-card upload-card">
+
+        <div class="section-header">
+            <h2>Upload Dataset</h2>
+            <p>CSV and Excel files supported</p>
+        </div>
 
         <form method="POST" enctype="multipart/form-data">
 
-            <input
-                type="file"
-                name="dataset"
-                accept=".csv,.xlsx"
-                required
-            >
+            <div class="upload-zone">
 
-            <button type="submit">
+                <input
+                    type="file"
+                    name="dataset"
+                    accept=".csv,.xlsx"
+                    required
+                >
+
+            </div>
+
+            <button type="submit" class="primary-btn">
                 Upload Dataset
             </button>
 
         </form>
 
         {% if error %}
-            <div class="error">
-                {{ error }}
-            </div>
+        <div class="error-box">
+            {{ error }}
+        </div>
         {% endif %}
 
-        {% if preview_data %}
+    </section>
 
-            <div class="summary">
-                <h2>Dataset Summary</h2>
+    {% if preview_data %}
 
-                <p><strong>Total Rows:</strong> {{ total_rows }}</p>
-                <p><strong>Total Columns:</strong> {{ total_columns }}</p>
-            </div>
-            <form method="POST">
+    <section class="glass-card operations-card">
 
-                <input type="hidden" name="cleaned_file" value="{{ cleaned_file }}">
+        <div class="section-header">
+            <h2>Cleaning Operations</h2>
+            <p>Apply transformations to your dataset</p>
+        </div>
 
-                <button type="submit" name="remove_duplicates">
-                    Remove Duplicate Rows
-                </button>
+        <form method="POST" class="operations-grid">
 
-                <button type="submit" name="remove_empty_rows">
-                    Remove Empty Rows
-                </button>
+            <input type="hidden" name="cleaned_file" value="{{ cleaned_file }}">
 
-                <button type="submit" name="remove_empty_columns">
-                    Remove Empty Columns
-                </button>
+            <button type="submit" name="remove_duplicates" class="action-btn">
+                Remove Duplicates
+            </button>
 
-                <button type="submit" name="fill_missing">
-                    Fill Missing Values
-                </button>
+            <button type="submit" name="remove_empty_rows" class="action-btn">
+                Remove Empty Rows
+            </button>
 
-                <button type="submit" name="standardize_columns">
-                    Standardize Column Names
-                </button>
+            <button type="submit" name="remove_empty_columns" class="action-btn">
+                Remove Empty Columns
+            </button>
 
-                <button type="submit" name="convert_types">
-                    Convert Data Types
-                </button>
+            <button type="submit" name="fill_missing" class="action-btn">
+                Fill Missing Values
+            </button>
 
-            </form>
+            <button type="submit" name="standardize_columns" class="action-btn">
+                Standardize Columns
+            </button>
 
-            <br>
+            <button type="submit" name="convert_types" class="action-btn">
+                Convert Types
+            </button>
+
+        </form>
+
+        <div class="toolbar">
 
             <a href="/history">
-                <button type="button">
-                    View Cleaning History
+                <button type="button" class="secondary-btn">
+                    View History
                 </button>
             </a>
 
             {% if cleaned_file %}
-
-            <br><br>
-
             <a href="/download/{{ cleaned_file }}">
-                <button type="button">
-                    Download Cleaned Dataset
+                <button type="button" class="primary-btn">
+                    Download Dataset
                 </button>
             </a>
-
             {% endif %}
 
-            <div class="preview">
-                <h2>First 10 Rows</h2>
+        </div>
 
-                {{ preview_data | safe }}
-            </div>
-            <div class="summary">
-                <h2>Data Quality Report</h2>
+    </section>
+
+    <section class="glass-card">
+
+        <div class="section-header">
+            <h2>Dataset Preview</h2>
+            <p>First 10 records</p>
+        </div>
+
+        <div class="table-wrapper">
+            {{ preview_data | safe }}
+        </div>
+
+    </section>
+
+    <section class="quality-layout">
+
+        <div class="glass-card">
+
+            <h2>Data Quality Report</h2>
+
+            <div class="report-block">
 
                 <h3>Missing Values</h3>
+
                 <ul>
                     {% for column, count in quality_report.missing_values.items() %}
-                        <li><strong>{{ column }}</strong>: {{ count }}</li>
+                    <li>{{ column }} : {{ count }}</li>
                     {% endfor %}
                 </ul>
 
-                <h3>Duplicate Rows</h3>
-                <p>{{ quality_report.duplicate_rows }}</p>
+            </div>
+
+            <div class="report-block">
+
+                <h3>Data Types</h3>
+
+                <ul>
+                    {% for column, datatype in quality_report.data_types.items() %}
+                    <li>{{ column }} : {{ datatype }}</li>
+                    {% endfor %}
+                </ul>
+
+            </div>
+
+        </div>
+
+        <div class="glass-card">
+
+            <div class="report-block">
 
                 <h3>Empty Columns</h3>
 
-                {% if quality_report.empty_columns %}
-                    <ul>
-                        {% for column in quality_report.empty_columns %}
-                            <li>{{ column }}</li>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                    <p>No empty columns found.</p>
-                {% endif %}
-
-                <h3>Data Types</h3>
                 <ul>
-                    {% for column, datatype in quality_report.data_types.items() %}
-                        <li><strong>{{ column }}</strong>: {{ datatype }}</li>
+                    {% for column in quality_report.empty_columns %}
+                    <li>{{ column }}</li>
                     {% endfor %}
                 </ul>
+
+            </div>
+
+            <div class="report-block">
 
                 <h3>Null Percentage</h3>
+
                 <ul>
                     {% for column, percentage in quality_report.null_percentage.items() %}
-                        <li><strong>{{ column }}</strong>: {{ percentage }}%</li>
+                    <li>{{ column }} : {{ percentage }}%</li>
                     {% endfor %}
                 </ul>
-            </div>
-            {% if summary %}
 
-            <div class="summary">
-                <h2>Before vs After Summary</h2>
-
-                <p><strong>Operation:</strong> {{ summary.operation }}</p>
-               <p><strong>Rows Before:</strong> {{ summary.rows_before }}</p>
-                <p><strong>Rows After:</strong> {{ summary.rows_after }}</p>
-                <p><strong>Changes:</strong> {{ summary.count }}</p>
             </div>
 
-{% endif %}
+        </div>
 
-        {% endif %}
+    </section>
 
-    </div>
+    {% if summary %}
+
+    <section class="glass-card">
+
+        <div class="section-header">
+            <h2>Before vs After Summary</h2>
+        </div>
+
+        <div class="summary-grid">
+
+            <div class="summary-item">
+                <span>Operation</span>
+                <h3>{{ summary.operation }}</h3>
+            </div>
+
+            <div class="summary-item">
+                <span>Rows Before</span>
+                <h3>{{ summary.rows_before }}</h3>
+            </div>
+
+            <div class="summary-item">
+                <span>Rows After</span>
+                <h3>{{ summary.rows_after }}</h3>
+            </div>
+
+            <div class="summary-item">
+                <span>Changes</span>
+                <h3>{{ summary.count }}</h3>
+            </div>
+
+        </div>
+
+    </section>
+
+    {% endif %}
+
+    {% endif %}
+
+</div>
+
+</div>
 
 </body>
 </html>
