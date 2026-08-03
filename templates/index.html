@@ -238,9 +238,21 @@
 
     <section class="glass-card">
 
-        <div class="section-header">
-            <h2>Dataset Preview</h2>
-            <p>First 10 records</p>
+        <div class="section-header preview-header">
+
+            <div>
+
+                <h2>Dataset Preview</h2>
+                <p>Showing the first 10 records</p>
+
+            </div>
+
+            <div class="preview-badge">
+
+                {{ total_rows }} Rows • {{ total_columns }} Columns
+
+            </div>
+
         </div>
 
         <div class="table-wrapper">
