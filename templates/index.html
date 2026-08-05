@@ -47,24 +47,48 @@
 
     <section class="stats-grid">
 
-        <div class="stat-card">
-            <span class="stat-label">Rows</span>
+    <div class="stat-card">
+
+        <div class="stat-icon">📄</div>
+
+        <div class="stat-content">
             <h2>{{ total_rows }}</h2>
+            <p>Total Rows</p>
+        </div>
+
+    </div>
+
+    <div class="stat-card">
+
+        <div class="stat-icon">📊</div>
+
+            <div class="stat-content">
+                <h2>{{ total_columns }}</h2>
+                <p>Total Columns</p>
+            </div>
+
         </div>
 
         <div class="stat-card">
-            <span class="stat-label">Columns</span>
-            <h2>{{ total_columns }}</h2>
+
+            <div class="stat-icon">📑</div>
+
+            <div class="stat-content">
+                <h2>{{ quality_report.duplicate_rows }}</h2>
+                <p>Duplicate Rows</p>
+            </div>
+
         </div>
 
         <div class="stat-card">
-            <span class="stat-label">Duplicates</span>
-            <h2>{{ quality_report.duplicate_rows }}</h2>
-        </div>
 
-        <div class="stat-card">
-            <span class="stat-label">Empty Columns</span>
-            <h2>{{ quality_report.empty_columns|length }}</h2>
+            <div class="stat-icon">🗑</div>
+
+            <div class="stat-content">
+                <h2>{{ quality_report.empty_columns|length }}</h2>
+                <p>Empty Columns</p>
+            </div>
+
         </div>
 
     </section>
@@ -119,27 +143,75 @@
             <input type="hidden" name="cleaned_file" value="{{ cleaned_file }}">
 
             <button type="submit" name="remove_duplicates" class="action-btn">
-                Remove Duplicates
+
+                <span class="action-title">
+                    Remove Duplicates
+                </span>
+
+                <span class="action-desc">
+                    Delete duplicate records
+                </span>
+
             </button>
 
             <button type="submit" name="remove_empty_rows" class="action-btn">
-                Remove Empty Rows
+
+                <span class="action-title">
+                    Remove Empty Rows
+                </span>
+
+                <span class="action-desc">
+                    Delete blank records
+                </span>
+
             </button>
 
             <button type="submit" name="remove_empty_columns" class="action-btn">
-                Remove Empty Columns
+
+                <span class="action-title">
+                    Remove Empty Columns
+                </span>
+
+                <span class="action-desc">
+                    Remove unused columns
+                </span>
+
             </button>
 
             <button type="submit" name="fill_missing" class="action-btn">
-                Fill Missing Values
-            </button>
+
+                <span class="action-title">
+                    Fill Missing Values
+                </span>
+
+                <span class="action-desc">
+                    Complete missing data
+                </span>
+
+            </button>>
 
             <button type="submit" name="standardize_columns" class="action-btn">
-                Standardize Columns
+
+                <span class="action-title">
+                    Standardize Columns
+                </span>
+
+                <span class="action-desc">
+                    Normalize column names
+                </span>
+
             </button>
 
             <button type="submit" name="convert_types" class="action-btn">
-                Convert Types
+
+                <span class="action-title">
+                    Convert Types
+                </span>
+
+                <span class="action-desc">
+                    Detect proper data types
+                </span>
+
             </button>
 
         </form>
