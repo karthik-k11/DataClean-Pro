@@ -106,12 +106,22 @@
 
             <div class="upload-zone">
 
+                <div class="upload-icon">
+                    📁
+                </div>
+
+                <h3>Select a Dataset</h3>
+
+                <p>
+                    Supported formats: CSV, XLSX
+                </p>
+
                 <input
                     type="file"
                     name="dataset"
                     accept=".csv,.xlsx"
                     required
-                >
+    >
 
             </div>
 
@@ -263,60 +273,57 @@
 
     <section class="quality-layout">
 
-        <div class="glass-card">
+    <   div class="quality-card">
 
-            <h2>Data Quality Report</h2>
+            <h3>Missing Values</h3>
 
-            <div class="report-block">
-
-                <h3>Missing Values</h3>
-
-                <ul>
-                    {% for column, count in quality_report.missing_values.items() %}
-                    <li>{{ column }} : {{ count }}</li>
-                    {% endfor %}
-                </ul>
-
+            {% for column, count in quality_report.missing_values.items() %}
+            <div class="quality-item">
+                <span>{{ column }}</span>
+                <strong>{{ count }}</strong>
             </div>
-
-            <div class="report-block">
-
-                <h3>Data Types</h3>
-
-                <ul>
-                    {% for column, datatype in quality_report.data_types.items() %}
-                    <li>{{ column }} : {{ datatype }}</li>
-                    {% endfor %}
-                </ul>
-
-            </div>
+            {% endfor %}
 
         </div>
 
-        <div class="glass-card">
+        <div class="quality-card">
 
-            <div class="report-block">
+            <h3>Data Types</h3>
 
-                <h3>Empty Columns</h3>
+            {% for column, datatype in quality_report.data_types.items() %}
+            <div class="quality-item">
+                <span>{{ column }}</span>
+                <strong>{{ datatype }}</strong>
+            </div>
+            {% endfor %}
 
-                <ul>
-                    {% for column in quality_report.empty_columns %}
-                    <li>{{ column }}</li>
-                    {% endfor %}
-                </ul>
+        </div>
 
+        <div class="quality-card">
+
+            <h3>Null Percentage</h3>
+
+            {% for column, percentage in quality_report.null_percentage.items() %}
+            <div class="quality-item">
+                <span>{{ column }}</span>
+                <strong>{{ percentage }}%</strong>
+            </div>
+            {% endfor %}
+
+        </div>
+
+        <div class="quality-card">
+
+            <h3>Overview</h3>
+
+            <div class="quality-item">
+                <span>Duplicate Rows</span>
+                <strong>{{ quality_report.duplicate_rows }}</strong>
             </div>
 
-            <div class="report-block">
-
-                <h3>Null Percentage</h3>
-
-                <ul>
-                    {% for column, percentage in quality_report.null_percentage.items() %}
-                    <li>{{ column }} : {{ percentage }}%</li>
-                    {% endfor %}
-                </ul>
-
+            <div class="quality-item">
+                <span>Empty Columns</span>
+                <strong>{{ quality_report.empty_columns|length }}</strong>
             </div>
 
         </div>
@@ -328,29 +335,40 @@
     <section class="glass-card">
 
         <div class="section-header">
-            <h2>Before vs After Summary</h2>
+
+            <h2>Cleaning Summary</h2>
+            <p>Latest cleaning operation results</p>
+
         </div>
 
         <div class="summary-grid">
 
             <div class="summary-item">
-                <span>Operation</span>
-                <h3>{{ summary.operation }}</h3>
+
+                <div class="summary-label">Operation</div>
+                <div class="summary-value">{{ summary.operation }}</div>
+
             </div>
 
             <div class="summary-item">
-                <span>Rows Before</span>
-                <h3>{{ summary.rows_before }}</h3>
+
+                <div class="summary-label">Rows Before</div>
+                <div class="summary-value">{{ summary.rows_before }}</div>
+
             </div>
 
             <div class="summary-item">
-                <span>Rows After</span>
-                <h3>{{ summary.rows_after }}</h3>
+
+                <div class="summary-label">Rows After</div>
+                <div class="summary-value">{{ summary.rows_after }}</div>
+
             </div>
 
             <div class="summary-item">
-                <span>Changes</span>
-                <h3>{{ summary.count }}</h3>
+
+                <div class="summary-label">Records Changed</div>
+                <div class="summary-value">{{ summary.count }}</div>
+
             </div>
 
         </div>
