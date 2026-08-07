@@ -1,59 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Cleaning History</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
 </head>
+
 <body>
 
-<div class="container">
+<div class="page-wrapper">
 
-    <h1>Cleaning History</h1>
+<div class="dashboard">
 
-    <table class="table">
+    <header class="topbar">
 
-        <tr>
-            <th>ID</th>
-            <th>File Name</th>
-            <th>Upload Date</th>
-            <th>Cleaning Operation</th>
-            <th>Final Row Count</th>
-        </tr>
+        <div class="brand-section">
 
-        {% for row in history %}
+            <div class="app-tag">
+                DATA ENGINEERING WORKSPACE
+            </div>
 
-        <tr>
-            <td>{{ row[0] }}</td>
-            <td>{{ row[1] }}</td>
-            <td>{{ row[2] }}</td>
-            <td>{{ row[3] }}</td>
-            <td>{{ row[4] }}</td>
-        </tr>
+            <h1>Cleaning History</h1>
 
-        {% endfor %}
+            <p>
+                View all previously cleaned datasets.
+            </p>
 
-    </table>
+        </div>
 
-    <br>
+        <div class="header-actions">
 
-    <form method="POST">
-        <button type="submit">
-            Clear History
-        </button>
-    </form>
+            <a href="/">
+                <button type="button" class="secondary-btn">
+                    Back to Home
+                </button>
+            </a>
 
-    <br>
+        </div>
 
-    <a href="/">
-        <button type="button">
-            Back to Home
-        </button>
-    </a>
+    </header>
+
+    <div class="glass-card">
+
+        <div class="section-header">
+
+            <h2>History Records</h2>
+
+            <p>
+                All cleaning operations performed.
+            </p>
+
+        </div>
+
+        {% if history %}
+
+        <div class="table-wrapper">
+
+            <table class="table">
+
+                <thead>
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>File Name</th>
+                    <th>Upload Date</th>
+                    <th>Operation</th>
+                    <th>Rows</th>
+
+                </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for row in history %}
+
+                <tr>
+
+                    <td>{{ row[0] }}</td>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[2] }}</td>
+                    <td>{{ row[3] }}</td>
+                    <td>{{ row[4] }}</td>
+
+                </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-history">
+
+            <h3>No Cleaning History</h3>
+
+            <p>
+                Upload and clean a dataset to create history records.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+        <br>
+
+        <form method="POST">
+
+            <button type="submit" class="primary-btn">
+
+                Clear History
+
+            </button>
+
+        </form>
+
+    </div>
 
 </div>
 
+</div>
+
+<footer class="footer">
+
+    <p>
+
+        DataClean Pro • Data Engineering Project • Built with Flask, Pandas & SQLite
+
+    </p>
+
+</footer>
+
 </body>
+
 </html>
